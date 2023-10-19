@@ -1,23 +1,27 @@
 import Button from "./Button";
 
-export default function Friend({ name, id, image, balance }) {
-  return (
-    <li>
-      <img src={image} alt={name} />
-      <h3>{name}</h3>
+export default function Friend({ friend, onSelection, selectedFriend }) {
+  const isSelected = friend?.id === selectedFriend?.id;
 
-      {balance < 0 && (
+  return (
+    <li className={isSelected ? "selected" : ""}>
+      <img src={friend.image} alt={friend.name} />
+      <h3>{friend.name}</h3>
+
+      {friend.balance < 0 && (
         <p className="red">
-          You owe {name} ${Math.abs(balance)}
+          You owe {friend.name} ${Math.abs(friend.balance)}
         </p>
       )}
-      {balance > 0 && (
+      {friend.balance > 0 && (
         <p className="green">
-          {name} owes you ${Math.abs(balance)}
+          {friend.name} owes you ${Math.abs(friend.balance)}
         </p>
       )}
-      {balance === 0 && <p>You and {name} are even</p>}
-      <Button>Select</Button>
+      {friend.balance === 0 && <p>You and {friend.name} are even</p>}
+      <Button onClick={() => onSelection(friend)}>
+        {isSelected ? "Close" : "Select"}
+      </Button>
     </li>
   );
 }
